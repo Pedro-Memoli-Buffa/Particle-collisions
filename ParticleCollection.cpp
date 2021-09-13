@@ -39,7 +39,7 @@ void ParticleCollection::sortParticles() {  // Applies insertion sort (will gene
 
 ParticleCollection::ParticleCollection(int numberOfParticles) {
 	for (int i = 0; i < numberOfParticles; i++) {
-		int maxSpeed = 160;
+		int maxSpeed = 400;
 		Vector2f position(rand() % 790 + 5, rand() % 590 + 5);
 		Vector2f velocity(rand() % maxSpeed * 2 - maxSpeed, rand() % maxSpeed * 2 - maxSpeed);
 		int mass = 4; // rand() % 2 + 4;
@@ -52,10 +52,11 @@ ParticleCollection::ParticleCollection(int numberOfParticles) {
 void ParticleCollection::moveParticles() {	// Possible force application 
 	for (int i = 0; i < particles_.size(); i++) {
 		particles_[i].move();
+		particles_[i].applyForce(Vector2f(0, 1000));
 	}
 }
 
-void ParticleCollection::checkCollisions(vector<Wall> walls) {  // Using sweep and prune
+void ParticleCollection::checkCollisions(const vector<Wall>& walls, bool friction) {  // Using sweep and prune
 	sortParticles();
 
 	for (int i = 0; i < particles_.size(); i++) {
@@ -86,14 +87,17 @@ void ParticleCollection::checkCollisions(vector<Wall> walls) {  // Using sweep a
 			particles_[i].getPosition().y + particles_[i].getRadius() >= 600) {  // Bottom border
 			particles_[i].setVelocity(Vector2f(particleVelocity.x, -particleVelocity.y));
 			particles_[i].addPosition(particles_[i].getVelocity(), velocityNorm);
+
+			if (friction && particleVelocity.y > 0) {
+				particles_[i].applyForce(Vector2f(-particles_[i].getVelocity().x * 30, -particles_[i].getVelocity().y * 30));
+				if (abs(particleVelocity.x) < 90 && abs(particleVelocity.y) < 90) particles_[i].setVelocity(Vector2f(0, 0));
+			}
 		}
-
 	}
-
 }
 
 void ParticleCollection::draw(RenderWindow& window) {
-	for (Particle particle : particles_) {
+	for (const Particle& particle : particles_) {
 		window.draw(particle.getShape());
 	}
 }

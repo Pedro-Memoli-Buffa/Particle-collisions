@@ -69,7 +69,7 @@ void Particle::addPosition(Vector2f direction, float magnitude) {
 	position_.y += direction.y * magnitude / norm;
 }
 
-CircleShape Particle::getShape() {
+CircleShape Particle::getShape() const {
 	CircleShape shape(radius_);
 	shape.setOrigin(Vector2f(radius_, radius_));
 	shape.setPosition(position_);

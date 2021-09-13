@@ -24,7 +24,7 @@ public:
 	void setVelocity(Vector2f newVelocity) { velocity_ = newVelocity; }
 	void addPosition(Vector2f direction, float magnitude);
 
-	CircleShape getShape();
+	CircleShape getShape() const;
 
 private:
 	int mass_;

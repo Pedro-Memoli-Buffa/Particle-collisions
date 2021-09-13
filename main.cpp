@@ -8,9 +8,9 @@ using namespace sf;
 int main()
 {
     RenderWindow window(VideoMode(800, 600), "Particle Collision", Style::Close | Style::Resize);
-    ParticleCollection collection(50);
+    ParticleCollection collection(15);
 
-    window.setFramerateLimit(60);
+    window.setFramerateLimit(160);
 
     while (window.isOpen()) {
         Event evnt;
@@ -23,7 +23,7 @@ int main()
         }
 
         collection.moveParticles();
-        collection.checkCollisions();
+        collection.checkCollisions({}, true);
         
         // Drawing
         window.clear();

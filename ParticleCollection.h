@@ -12,7 +12,7 @@ public:
 	ParticleCollection(int numberOfParticles);
 
 	void moveParticles();
-	void checkCollisions(vector<Wall> walls = {});
+	void checkCollisions(const vector<Wall>& walls = {}, bool friction = false);
 	void sortParticles();
 
 	void draw(RenderWindow& window);
